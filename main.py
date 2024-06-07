@@ -1,57 +1,76 @@
-from Transiciones import *
+from tkinter import *
 
-Transiciones=[
-    [Transicion1(),Transicion2(),Transicion3()],
-    [Transicion4(),Transicion5(),Transicion6()],
-    [Transicion7()],
-    [Transicion8(),Transicion9(),Transicion10()],
-    [Transicion11(),Transicion12(),Transicion13()],
-    [Transicion14()],
-    [Transicion15(),Transicion16(),Transicion17()],
-]
+def on_cerrar_ventana():
+    root.destroy()
 
-control=0
-estado=0
-empieza=True
-cinta=[]
-resultado="Rechazada"
-cadena=input("Ingresa la cadena palindroma de 0 y 1:")
-cadena=str(cadena)
-for i in cadena:
-    cinta.append(int(i))
-
-
-while empieza:
-    encontro=None
-    if control<0:
-        auxiliar=-1
-    else:
-        if control>=len(cinta):
-            auxiliar=7
-        else:
-            auxiliar=cinta[control]
-    if estado !=7:
-        for i in Transiciones[estado]:            
-            if auxiliar == i.entrada:
-                encontro=i
-    else: 
-        resultado="Aceptado" 
-        empieza=False
+def centrar_ventana(ventana, ancho, alto):
+    ancho_pantalla = ventana.winfo_screenwidth()
+    alto_pantalla = ventana.winfo_screenheight()
+    x = (ancho_pantalla // 2) - (ancho // 2)
+    y = (alto_pantalla // 2) - (alto // 2)
     
-    if encontro:
-        if control>=0 and control<len(cinta):
-            if encontro.remplazo == 'B':
-                cinta.pop(control)
-            else:
-                cinta[control]=encontro.remplazo
-        estado=encontro.estado
-        if encontro.movimiento == "L":
-            control-=1
-        else:
-            control+=1
-    else: empieza=False
+    ventana.geometry(f'{ancho}x{alto}+{x}+{y}')
 
-print(resultado)
+def centrar_ventana_emergente(ventana_padre, ventana_emergente, ancho, alto):
+    ventana_padre.update_idletasks()
+    ancho_padre = ventana_padre.winfo_width()
+    alto_padre = ventana_padre.winfo_height()
+    x_padre = ventana_padre.winfo_x()
+    y_padre = ventana_padre.winfo_y()
+    
+    x = x_padre + (ancho_padre // 2) - (ancho // 2)
+    y = y_padre + (alto_padre // 2) - (alto // 2)
+    
+    ventana_emergente.geometry(f'{ancho}x{alto}+{x}+{y}')
 
-        
+def abrir_ventana_emergente():
+    ventana = Toplevel(root)
+    ventana.title("Calcular Cadena")
+    ancho_ventana_emergente = 500
+    alto_ventana_emergente = 200
+    centrar_ventana_emergente(root, ventana, ancho_ventana_emergente, alto_ventana_emergente)
 
+    ventana.config(bg="white")
+    frame2=Frame(ventana)
+    frame2.pack(fill="both", expand=True)
+    frame2.config(bg="#013252")
+    frame2.config(bd=21)
+
+    infbox1 = Text(frame2, width=50, height=2,font=("Arial", 17, "bold italic"))  # Ajuste estos valores según sea necesario
+    infbox1.pack( expand=True, padx=10, pady=10)
+    infbox1.config(relief="solid")
+
+    boton3 = Button(frame2, text="Calcular", width=30, height=2, command="")
+    boton3.pack()#Falta hacer que cuando se de al boton se abra otra ventana igual pero con los controles anteriores
+    
+    infbox1.config(state="disabled")#esto es para desactivar el text
+    
+
+root = Tk()
+root.title("Registro de horas extracurriculares")
+root.config(bg="black")
+ancho_ventana = 400
+alto_ventana = 300
+
+centrar_ventana(root, ancho_ventana, alto_ventana)
+
+frame = Frame(root)
+frame.pack(fill="both", expand=True)
+frame.config(bg="#013252")
+frame.config(bd=21)
+
+label = Label(frame, text="Máquina de Turing que calcula \n palíndromos pares de 0 y 1", font=("Arial", 17, "bold italic"), fg="white")
+label.config(bg="#013252")
+label.pack()
+
+boton = Button(frame, text="CALCULAR CADENA", width=30, height=2,command=abrir_ventana_emergente)
+boton.pack()
+boton.place(x=70, y=120)
+
+boton2 = Button(frame, text="Salir", width=30, height=2, command=on_cerrar_ventana)
+boton2.pack()
+boton2.place(x=70, y=170)
+
+
+root.protocol("WM_DELETE_WINDOW", on_cerrar_ventana)
+root.mainloop()
