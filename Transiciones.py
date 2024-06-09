@@ -16,7 +16,7 @@ class Transicion2:
 class Transicion3:
     def __init__(self):
         self.estado=7
-        self.entrada=7
+        self.entrada="B"
         self.remplazo="B"
         self.movimiento="R"
 #----------------q1--------------------
@@ -37,7 +37,7 @@ class Transicion5:
 class Transicion6:
     def __init__(self):
         self.estado=2
-        self.entrada=7
+        self.entrada="B"
         self.remplazo="B"
         self.movimiento="L"
 #----------------q2--------------------
@@ -65,7 +65,7 @@ class Transicion9:
 class Transicion10:
     def __init__(self):
         self.estado=0
-        self.entrada=-1
+        self.entrada="B"
         self.remplazo="B"
         self.movimiento="R"
 #----------------q4--------------------
@@ -86,7 +86,7 @@ class Transicion12:
 class Transicion13:
     def __init__(self):
         self.estado=5
-        self.entrada=7
+        self.entrada="B"
         self.remplazo="B"
         self.movimiento="L"
 #----------------q5--------------------
@@ -114,7 +114,7 @@ class Transicion16:
 class Transicion17:
     def __init__(self):
         self.estado=0
-        self.entrada=-1
+        self.entrada="B"
         self.remplazo="B"
         self.movimiento="R"
 
