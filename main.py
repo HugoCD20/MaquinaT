@@ -22,25 +22,60 @@ def centrar_ventana_emergente(ventana_padre, ventana_emergente, ancho, alto):
     y = y_padre + (alto_padre // 2) - (alto // 2)
     
     ventana_emergente.geometry(f'{ancho}x{alto}+{x}+{y}')
+def cerrar(ventana2,ventana3):
+    ventana2.withdraw()
+    ventana3.withdraw()
+def finalizar(ventana2,decision):
+    ventana3 = Toplevel(root)
+    ventana3.title("resultado")
+    ancho_ventana_emergente = 200
+    alto_ventana_emergente = 100
+    centrar_ventana_emergente(root, ventana3, ancho_ventana_emergente, alto_ventana_emergente)
+    
+    frame4=Frame(ventana3)
+    frame4.pack(fill="both", expand=True)
+    frame4.config(bd=21)
+    resultado=Label(frame4,text=f"La cadena fue: {decision}", font=("Arial", 9, "bold italic"))
+    resultado.pack()
 
-def Procedimiento(infbox2,cadena):
-    x=[]
-    for i in range(len(cadena[0][1])):
-        if i==cadena[0][0]:
-            x.append("q")
-            x.append(cadena[0][1][i])
+    boton5 = Button(frame4, text="Finalizar", width=15, height=1, command=lambda:cerrar(ventana2,ventana3))
+    boton5.pack()#Falta hacer que cuando se de al boton se abra otra ventana igual pero con los controles anteriores
+    
+
+def Procedimiento(infbox2,cadena,ventana2):
+    continuar=True
+    if len(cadena)==1:
+        print(cadena[0][2])
+        continuar=False
+    if continuar:
+        x=[]
+        for i in range(len(cadena[0][1])):
+            if i==cadena[0][0]:
+                x.append("q")
+                x.append(cadena[0][1][i])
+            else:
+                x.append(cadena[0][1][i])
+        
+        final=True
+        for i in x:
+            if i =="q":
+                final=False
+       
+        if final: x.append("q")
+        z=""
+        for i in x:
+            z+=str(i)
+        z="BBB"+z+"BBB"
+        infbox2.delete("1.0", END)
+        infbox2.insert("1.0", z)
+        cadena.pop(0)
+    else:
+        if cadena[0][2]=="Aceptado":
+            decision="Aceptada"
+            finalizar(ventana2,decision)
         else:
-            x.append(cadena[0][1][i])
-    
-    final=True
-    for i in x:
-        if i =="q":
-            final=False
-    
-    if final: x.append("qB")
-    infbox2.delete("1.0", END)
-    infbox2.insert("1.0", x)
-    cadena.pop(0)
+            decision="Rechazada"
+            finalizar(ventana2,decision)
 
 def calcular_cadena(ventana,infbox1):
     ventana.withdraw()
@@ -57,14 +92,14 @@ def calcular_cadena(ventana,infbox1):
     frame3.pack(fill="both", expand=True)
     frame3.config(bg="#013252")
     frame3.config(bd=21)
-    impresion="q"+datos
+    impresion="BBBq"+datos+"BBB"
     infbox2 = Text(frame3, width=50, height=2,font=("Arial", 17, "bold italic"))  # Ajuste estos valores según sea necesario
     infbox2.pack( expand=True, padx=10, pady=10)
     infbox2.config(relief="solid")
     infbox2.insert("1.0", impresion)
     #infbox2.config(state="disabled")#esto es para desactivar el text
 
-    boton4 = Button(frame3, text="Siguiente paso", width=30, height=2, command=lambda:Procedimiento(infbox2,cadena))
+    boton4 = Button(frame3, text="Siguiente paso", width=30, height=2, command=lambda:Procedimiento(infbox2,cadena,ventana2))
     boton4.pack()#Falta hacer que cuando se de al boton se abra otra ventana igual pero con los controles anteriores
     
     
