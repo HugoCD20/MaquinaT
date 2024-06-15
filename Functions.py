@@ -2,13 +2,13 @@ from Transiciones import *
 
 def realizar(cadena):
     Transiciones=[
-        [Transicion1(),Transicion2(),Transicion3()],
-        [Transicion4(),Transicion5(),Transicion6()],
-        [Transicion7()],
-        [Transicion8(),Transicion9(),Transicion10()],
-        [Transicion11(),Transicion12(),Transicion13()],
-        [Transicion14()],
-        [Transicion15(),Transicion16(),Transicion17()],
+        [Transicion(1,0,"B","R",0),Transicion(4,1,"B","R",0),Transicion(7,"B","B","R",0)],
+        [Transicion(1,0,0,"R",1),Transicion(1,1,1,"R",1),Transicion(2,"B","B","L",1)],
+        [Transicion(3,0,"B","L",2)],
+        [Transicion(3,0,0,"L",3),Transicion(3,1,1,"L",3),Transicion(0,"B","B","R",3)],
+        [Transicion(4,0,0,"R",4),Transicion(4,1,1,"R",4),Transicion(5,"B","B","L",4)],
+        [Transicion(6,1,"B","L",5)],
+        [Transicion(6,0,0,"L",6),Transicion(6,1,1,"L",6),Transicion(0,"B","B","R",6)],
     ]
 
     control=0
@@ -40,6 +40,7 @@ def realizar(cadena):
             resultado="Aceptado" 
             empieza=False
         
+        impresion.append([control, cinta.copy(), resultado,encontro])
         if encontro:
             if control>=0 and control<len(cinta):
                 cinta[control]=encontro.remplazo
@@ -50,7 +51,6 @@ def realizar(cadena):
                 control+=1
                 
         else: empieza=False
-        impresion.append([control, cinta.copy(), resultado])
     return impresion
     
 

@@ -42,12 +42,17 @@ def finalizar(ventana2,decision):
     boton5.pack()#Falta hacer que cuando se de al boton se abra otra ventana igual pero con los controles anteriores
     
 
-def Procedimiento(infbox2,cadena,ventana2):
+def Procedimiento(infbox2,cadena,ventana2,funcion,grafo):
     continuar=True
     if len(cadena)==1:
         print(cadena[0][2])
         continuar=False
     if continuar:
+        imagen1 = PhotoImage(file=f"img/q{cadena[0][3].estadoActual}.png")
+        imagen_redimensionada4 = imagen1.subsample(5, 5)
+        grafo.config(image=imagen_redimensionada4)
+        grafo.image = imagen_redimensionada4  # Mantener referencia
+        funcion.config(text=f"δ(q{cadena[0][3].estadoActual},{cadena[0][3].entrada})=(q{cadena[0][3].estado},{cadena[0][3].remplazo},{cadena[0][3].movimiento})")
         x=[]
         for i in range(len(cadena[0][1])):
             if i==cadena[0][0]:
@@ -73,6 +78,10 @@ def Procedimiento(infbox2,cadena,ventana2):
         if cadena[0][2]=="Aceptado":
             decision="Aceptada"
             finalizar(ventana2,decision)
+            imagen1 = PhotoImage(file=f"img/q7.png")
+            imagen_redimensionada4 = imagen1.subsample(5, 5)
+            grafo.config(image=imagen_redimensionada4)
+            grafo.image = imagen_redimensionada4
         else:
             decision="Rechazada"
             finalizar(ventana2,decision)
@@ -83,8 +92,8 @@ def calcular_cadena(ventana,infbox1):
     cadena=realizar(datos)
     ventana2 = Toplevel(root)
     ventana2.title("Calcular Cadena")
-    ancho_ventana_emergente = 500
-    alto_ventana_emergente = 200
+    ancho_ventana_emergente = 700
+    alto_ventana_emergente = 700
     centrar_ventana_emergente(root, ventana2, ancho_ventana_emergente, alto_ventana_emergente)
     
     ventana2.config(bg="white")
@@ -92,15 +101,21 @@ def calcular_cadena(ventana,infbox1):
     frame3.pack(fill="both", expand=True)
     frame3.config(bg="#013252")
     frame3.config(bd=21)
-    impresion="BBBq"+datos+"BBB"
-    infbox2 = Text(frame3, width=50, height=2,font=("Arial", 17, "bold italic"))  # Ajuste estos valores según sea necesario
+
+    grafo = Label(frame3)
+    grafo.pack()
+
+    infbox2 = Text(frame3, width=50, height=2,font=("Arial", 17, "bold italic"))  
     infbox2.pack( expand=True, padx=10, pady=10)
     infbox2.config(relief="solid")
-    infbox2.insert("1.0", impresion)
-    #infbox2.config(state="disabled")#esto es para desactivar el text
+  
+    funcion=Label(frame3)
+    funcion.pack()
 
-    boton4 = Button(frame3, text="Siguiente paso", width=30, height=2, command=lambda:Procedimiento(infbox2,cadena,ventana2))
-    boton4.pack()#Falta hacer que cuando se de al boton se abra otra ventana igual pero con los controles anteriores
+    Procedimiento(infbox2,cadena,ventana2,funcion,grafo)
+
+    boton4 = Button(frame3, text="Siguiente paso", width=30, height=2, command=lambda:Procedimiento(infbox2,cadena,ventana2,funcion,grafo))
+    boton4.pack()
     
     
 
