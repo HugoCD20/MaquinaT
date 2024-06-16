@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from Functions import realizar
 def on_cerrar_ventana():
     root.destroy()
@@ -41,11 +42,23 @@ def finalizar(ventana2,decision):
     boton5 = Button(frame4, text="Finalizar", width=15, height=1, command=lambda:cerrar(ventana2,ventana3))
     boton5.pack()#Falta hacer que cuando se de al boton se abra otra ventana igual pero con los controles anteriores
     
+def llenartabla2(tabla3):
+    transiciones=[
+        ["q0","(q1,B,R)","(q4,B,R)","(q7,B,R)"],
+        ["q1","(q1,0,R)","(q1,1,R)","(q2,B,L)"],
+        ["q2","(q3,B,L)"],
+        ["q3","(q3,0,L)","(q3,1,L)","(q0,B,R)"],
+        ["q4","(q4,0,R)","(q4,1,R)","(q5,B,L)"],
+        ["q5","","(q6,B,L)"],
+        ["q6","(q6,0,L)","(q6,1,L)","(q0,B,R)"],
+        ["q7"]
+    ]
+    for datos in transiciones:
+        tabla3.insert("", "end", values=datos)
 
-def Procedimiento(infbox2,cadena,ventana2,funcion,grafo):
+def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4):
     continuar=True
     if len(cadena)==1:
-        print(cadena[0][2])
         continuar=False
     if continuar:
         imagen1 = PhotoImage(file=f"img/q{cadena[0][3].estadoActual}.png")
@@ -56,17 +69,17 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo):
         x=[]
         for i in range(len(cadena[0][1])):
             if i==cadena[0][0]:
-                x.append("q")
+                x.append(f"q")
                 x.append(cadena[0][1][i])
             else:
                 x.append(cadena[0][1][i])
         
         final=True
         for i in x:
-            if i =="q":
+            if i ==f"q":
                 final=False
        
-        if final: x.append("q")
+        if final: x.append(f"q")
         z=""
         for i in x:
             z+=str(i)
@@ -76,15 +89,53 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo):
         cadena.pop(0)
     else:
         if cadena[0][2]=="Aceptado":
-            decision="Aceptada"
-            finalizar(ventana2,decision)
-            imagen1 = PhotoImage(file=f"img/q7.png")
-            imagen_redimensionada4 = imagen1.subsample(5, 5)
-            grafo.config(image=imagen_redimensionada4)
-            grafo.image = imagen_redimensionada4
+            if cadena[0][1]:
+                decision="Aceptada"
+                finalizar(ventana2,decision)
+                imagen1 = PhotoImage(file=f"img/q7.png")
+                imagen_redimensionada4 = imagen1.subsample(5, 5)
+                grafo.config(image=imagen_redimensionada4)
+                funcion.config(text=f"                                                                                                                                           ")
+                grafo.image = imagen_redimensionada4
+                boton4.config(state="disabled")
+            else:
+                boton4.config(state="disabled")
+                decision="Rechazada"
+                finalizar(ventana2,decision)
         else:
+            boton4.config(state="disabled")
+            if len(cadena[0][1]) > 1:
+                if cadena[0][1][1]==0:
+                    imagen1 = PhotoImage(file=f"img/q5.png")
+                else:
+                    imagen1 = PhotoImage(file=f"img/q2.png")
+                imagen_redimensionada4 = imagen1.subsample(5, 5)
+                grafo.config(image=imagen_redimensionada4)
+                grafo.image = imagen_redimensionada4  
+            x=[]
+            for i in range(len(cadena[0][1])):
+                if i==cadena[0][0]:
+                    x.append("q")
+                    x.append(cadena[0][1][i])
+                else:
+                    x.append(cadena[0][1][i])
+            
+            final=True
+            for i in x:
+                if i =="q":
+                    final=False
+        
+            if final: x.append("q")
+            z=""
+            for i in x:
+                z+=str(i)
+            z="BBB"+z+"BBB"
+            infbox2.delete("1.0", END)
+            infbox2.insert("1.0", z)
+            cadena.pop(0)
             decision="Rechazada"
-            finalizar(ventana2,decision)
+            ventana2.after(300,finalizar(ventana2,decision))
+            
 
 def calcular_cadena(ventana,infbox1):
     ventana.withdraw()
@@ -92,7 +143,7 @@ def calcular_cadena(ventana,infbox1):
     cadena=realizar(datos)
     ventana2 = Toplevel(root)
     ventana2.title("Calcular Cadena")
-    ancho_ventana_emergente = 700
+    ancho_ventana_emergente = 1100
     alto_ventana_emergente = 700
     centrar_ventana_emergente(root, ventana2, ancho_ventana_emergente, alto_ventana_emergente)
     
@@ -104,18 +155,39 @@ def calcular_cadena(ventana,infbox1):
 
     grafo = Label(frame3)
     grafo.pack()
+    grafo.place(x=5,y=5)
 
     infbox2 = Text(frame3, width=50, height=2,font=("Arial", 17, "bold italic"))  
     infbox2.pack( expand=True, padx=10, pady=10)
     infbox2.config(relief="solid")
+    infbox2.place(x=30,y=530)
   
-    funcion=Label(frame3)
+    funcion=Label(frame3,bg="#013252",fg="white",font=("Arial", 12, "bold italic"))
     funcion.pack()
+    funcion.place(x=290,y=590)
 
-    Procedimiento(infbox2,cadena,ventana2,funcion,grafo)
+    funciones=Label(frame3,text="FUNCIONES DE TRANSICIÓN",bg="#013252",fg="white",font=("Arial", 12, "bold italic"))
+    funciones.pack()
+    funciones.place(x=755,y=120)
+    tabla3 = ttk.Treeview(frame3, columns=("Estados","0","1","B"), show="headings")
+    tabla3.heading("Estados", text="Estados")
+    tabla3.column("Estados", width=50)  
+    tabla3.heading("0", text="0")
+    tabla3.column("0", width=90) 
+    tabla3.heading("1", text="1")
+    tabla3.column("1", width=90)  
+    tabla3.heading("B", text="B")
+    tabla3.column("B", width=90)  
+    tabla3.grid(row=0, column=0, padx=10, pady=10)  
+    tabla3.tag_configure("custom_font", font=("Helvetica", 17))
+    tabla3.place(x=720,y=150)
 
-    boton4 = Button(frame3, text="Siguiente paso", width=30, height=2, command=lambda:Procedimiento(infbox2,cadena,ventana2,funcion,grafo))
+    llenartabla2(tabla3)
+
+    boton4 = Button(frame3, text="Siguiente paso", width=30, height=2, command=lambda:Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4))
     boton4.pack()
+    boton4.place(x=250,y=620)
+    Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4)
     
     
 
