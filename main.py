@@ -69,17 +69,17 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4):
         x=[]
         for i in range(len(cadena[0][1])):
             if i==cadena[0][0]:
-                x.append(f"q")
+                x.append(f"➞")
                 x.append(cadena[0][1][i])
             else:
                 x.append(cadena[0][1][i])
         
         final=True
         for i in x:
-            if i ==f"q":
+            if i ==f"➞":
                 final=False
        
-        if final: x.append(f"q")
+        if final: x.append(f"➞")
         z=""
         for i in x:
             z+=str(i)
@@ -98,6 +98,28 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4):
                 funcion.config(text=f"                                                                                                                                           ")
                 grafo.image = imagen_redimensionada4
                 boton4.config(state="disabled")
+            
+                x=[]
+                for i in range(len(cadena[0][1])):
+                    if i==cadena[0][0]:
+                        x.append(f"➞")
+                        x.append(cadena[0][1][i])
+                    else:
+                        x.append(cadena[0][1][i])
+                
+                final=True
+                for i in x:
+                    if i ==f"➞":
+                        final=False
+            
+                if final: x.append(f"➞")
+                z=""
+                for i in x:
+                    z+=str(i)
+                z="BBB"+z+"BBB"
+                infbox2.delete("1.0", END)
+                infbox2.insert("1.0", z)
+                cadena.pop(0)
             else:
                 boton4.config(state="disabled")
                 decision="Rechazada"
@@ -115,17 +137,17 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4):
             x=[]
             for i in range(len(cadena[0][1])):
                 if i==cadena[0][0]:
-                    x.append("q")
+                    x.append("➞")
                     x.append(cadena[0][1][i])
                 else:
                     x.append(cadena[0][1][i])
             
             final=True
             for i in x:
-                if i =="q":
+                if i =="➞":
                     final=False
         
-            if final: x.append("q")
+            if final: x.append("➞")
             z=""
             for i in x:
                 z+=str(i)
