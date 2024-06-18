@@ -56,7 +56,7 @@ def llenartabla2(tabla3):
     for datos in transiciones:
         tabla3.insert("", "end", values=datos)
 
-def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4):
+def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4,e_actual):
     continuar=True
     if len(cadena)==1:
         continuar=False
@@ -64,8 +64,9 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4):
         imagen1 = PhotoImage(file=f"img/q{cadena[0][3].estadoActual}.png")
         imagen_redimensionada4 = imagen1.subsample(5, 5)
         grafo.config(image=imagen_redimensionada4)
-        grafo.image = imagen_redimensionada4  # Mantener referencia
+        grafo.image = imagen_redimensionada4  
         funcion.config(text=f"δ(q{cadena[0][3].estadoActual},{cadena[0][3].entrada})=(q{cadena[0][3].estado},{cadena[0][3].remplazo},{cadena[0][3].movimiento})")
+        e_actual.config(text=f"q{cadena[0][3].estadoActual}")
         x=[]
         for i in range(len(cadena[0][1])):
             if i==cadena[0][0]:
@@ -98,7 +99,7 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4):
                 funcion.config(text=f"                                                                                                                                           ")
                 grafo.image = imagen_redimensionada4
                 boton4.config(state="disabled")
-            
+                e_actual.config(text=f"q7")
                 x=[]
                 for i in range(len(cadena[0][1])):
                     if i==cadena[0][0]:
@@ -121,6 +122,7 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4):
                 infbox2.insert("1.0", z)
                 cadena.pop(0)
             else:
+                funcion.config(text=f"                                                                                                                                           ")
                 boton4.config(state="disabled")
                 decision="Rechazada"
                 finalizar(ventana2,decision)
@@ -129,8 +131,10 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4):
             if len(cadena[0][1]) > 1:
                 if cadena[0][1][1]==0:
                     imagen1 = PhotoImage(file=f"img/q5.png")
+                    e_actual.config(text=f"q5")
                 else:
                     imagen1 = PhotoImage(file=f"img/q2.png")
+                    e_actual.config(text=f"q2")
                 imagen_redimensionada4 = imagen1.subsample(5, 5)
                 grafo.config(image=imagen_redimensionada4)
                 grafo.image = imagen_redimensionada4  
@@ -157,6 +161,8 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4):
             cadena.pop(0)
             decision="Rechazada"
             ventana2.after(300,finalizar(ventana2,decision))
+            funcion.config(text=f"                                                                                                                                           ")
+            
             
 
 def calcular_cadena(ventana,infbox1):
@@ -183,6 +189,14 @@ def calcular_cadena(ventana,infbox1):
     infbox2.pack( expand=True, padx=10, pady=10)
     infbox2.config(relief="solid")
     infbox2.place(x=30,y=530)
+
+    estado=Label(frame3,text="Estado actual:",bg="#013252",fg="white",font=("Arial", 12, "bold italic"))
+    estado.pack()
+    estado.place(x=700,y=530)
+
+    e_actual=Label(frame3,bg="#013252",fg="white",font=("Arial", 12, "bold italic"))
+    e_actual.pack()
+    e_actual.place(x=740,y=550)
   
     funcion=Label(frame3,bg="#013252",fg="white",font=("Arial", 12, "bold italic"))
     funcion.pack()
@@ -206,10 +220,10 @@ def calcular_cadena(ventana,infbox1):
 
     llenartabla2(tabla3)
 
-    boton4 = Button(frame3, text="Siguiente paso", width=30, height=2, command=lambda:Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4))
+    boton4 = Button(frame3, text="Siguiente paso", width=30, height=2, command=lambda:Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4,e_actual))
     boton4.pack()
     boton4.place(x=250,y=620)
-    Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4)
+    Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4,e_actual)
     
     
 
