@@ -62,7 +62,7 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4,e_actual):
         continuar=False
     if continuar:
         imagen1 = PhotoImage(file=f"img/q{cadena[0][3].estadoActual}.png")
-        imagen_redimensionada4 = imagen1.subsample(5, 5)
+        imagen_redimensionada4 = imagen1.subsample(1, 1)
         grafo.config(image=imagen_redimensionada4)
         grafo.image = imagen_redimensionada4  
         funcion.config(text=f"δ(q{cadena[0][3].estadoActual},{cadena[0][3].entrada})=(q{cadena[0][3].estado},{cadena[0][3].remplazo},{cadena[0][3].movimiento})")
@@ -94,7 +94,7 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4,e_actual):
                 decision="Aceptada"
                 finalizar(ventana2,decision)
                 imagen1 = PhotoImage(file=f"img/q7.png")
-                imagen_redimensionada4 = imagen1.subsample(5, 5)
+                imagen_redimensionada4 = imagen1.subsample(1, 1)
                 grafo.config(image=imagen_redimensionada4)
                 funcion.config(text=f"                                                                                                                                           ")
                 grafo.image = imagen_redimensionada4
@@ -135,7 +135,7 @@ def Procedimiento(infbox2,cadena,ventana2,funcion,grafo,boton4,e_actual):
                 else:
                     imagen1 = PhotoImage(file=f"img/q2.png")
                     e_actual.config(text=f"q2")
-                imagen_redimensionada4 = imagen1.subsample(5, 5)
+                imagen_redimensionada4 = imagen1.subsample(1, 1)
                 grafo.config(image=imagen_redimensionada4)
                 grafo.image = imagen_redimensionada4  
             x=[]
@@ -183,7 +183,7 @@ def calcular_cadena(ventana,infbox1):
 
     grafo = Label(frame3)
     grafo.pack()
-    grafo.place(x=5,y=5)
+    grafo.place(x=1,y=1)
 
     infbox2 = Text(frame3, width=50, height=2,font=("Arial", 17, "bold italic"))  
     infbox2.pack( expand=True, padx=10, pady=10)
@@ -204,7 +204,7 @@ def calcular_cadena(ventana,infbox1):
 
     funciones=Label(frame3,text="FUNCIONES DE TRANSICIÓN",bg="#013252",fg="white",font=("Arial", 12, "bold italic"))
     funciones.pack()
-    funciones.place(x=755,y=120)
+    funciones.place(x=775,y=120)
     tabla3 = ttk.Treeview(frame3, columns=("Estados","0","1","B"), show="headings")
     tabla3.heading("Estados", text="Estados")
     tabla3.column("Estados", width=50)  
@@ -216,7 +216,7 @@ def calcular_cadena(ventana,infbox1):
     tabla3.column("B", width=90)  
     tabla3.grid(row=0, column=0, padx=10, pady=10)  
     tabla3.tag_configure("custom_font", font=("Helvetica", 17))
-    tabla3.place(x=720,y=150)
+    tabla3.place(x=740,y=150)
 
     llenartabla2(tabla3)
 
